@@ -1,23 +1,24 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 import plotly.express as px
-import tensorflow as tf
 from itertools import product
 import random
 
 st.set_page_config(page_title="AI-Powered Resilient Supply Chain", layout="wide")
 
 st.title("🚚 GPT-powered Intelligent Supply Chain Dashboard")
-st.markdown("### By: IIM Indore | TechNZ | #AI #SupplyChain #Streamlit #TensorFlow")
+st.markdown("### By: IIM Indore | TechNZ | #AI #SupplyChain #Streamlit #Innovation")
 
 # Sidebar
 with st.sidebar:
     st.header("🔧 Controls")
-    selected_tab = st.radio("Select Module", ["Megatrend Tracker", "Dynkin Diagram", "Markov Model", "Game Theory", "TensorFlow Forecast", "RAG Insights"])
+    selected_tab = st.radio("Select Module", [
+        "Megatrend Tracker", "Dynkin Diagram", "Markov Model",
+        "Game Theory", "Forecast Simulation", "RAG Insights"
+    ])
 
 # ---------------- TAB 1: Megatrend Tracker ----------------
 if selected_tab == "Megatrend Tracker":
@@ -88,32 +89,22 @@ elif selected_tab == "Game Theory":
 
     st.write("**Note:** Equilibrium visualized is hypothetical and strategic, not solved.")
 
-# ---------------- TAB 5: TensorFlow Forecast ----------------
-elif selected_tab == "TensorFlow Forecast":
-    st.subheader("🧠 TensorFlow-based Disruption Forecast")
-    st.write("Simulated LSTM-based prediction (demo)")
+# ---------------- TAB 5: Forecast Simulation ----------------
+elif selected_tab == "Forecast Simulation":
+    st.subheader("📊 Forecast Simulation (No TensorFlow)")
+    st.write("Simulated disruption forecast using NumPy")
 
-    # Dummy time series
     time = np.arange(100)
     signal = np.sin(time * 0.1) + np.random.normal(0, 0.1, 100)
 
-    # Dummy LSTM model
-    model = tf.keras.Sequential([
-        tf.keras.layers.Input(shape=(10, 1)),
-        tf.keras.layers.LSTM(10),
-        tf.keras.layers.Dense(1)
-    ])
-    model.compile(optimizer='adam', loss='mse')
+    window = 10
+    forecast = [np.mean(signal[i:i+window]) + np.random.normal(0, 0.05) for i in range(len(signal) - window)]
 
-    X = np.array([signal[i:i+10] for i in range(90)])
-    y = signal[10:100]
-    X = X.reshape((90, 10, 1))
-
-    model.fit(X, y, epochs=3, verbose=0)
-    prediction = model.predict(X, verbose=0)
-
-    df_pred = pd.DataFrame({"Actual": y, "Predicted": prediction.flatten()})
-    st.line_chart(df_pred)
+    df_forecast = pd.DataFrame({
+        "Time": time[window:],
+        "Forecast": forecast
+    })
+    st.line_chart(df_forecast.set_index("Time"))
 
 # ---------------- TAB 6: RAG Insights ----------------
 elif selected_tab == "RAG Insights":
